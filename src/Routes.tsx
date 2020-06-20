@@ -5,6 +5,7 @@ import { Button, Text, ActivityIndicator, AsyncStorage } from 'react-native';
 import { Center } from './Center';
 import { AuthParamList, AuthNavProps } from './AuthParamList';
 import { AuthContext } from './AuthProvider';
+import { AppTabs } from './AppTabs';
 
 interface RoutesProps {
 
@@ -48,7 +49,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
             if (userString) {
                login()
             }
-            setLoading(false)
+            setLoading(false);
             console.log(userString)
         }).catch(err => {
             console.log(err);
@@ -63,7 +64,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
     }
         return (
             <NavigationContainer>
-                { user ? <Center><Text>you exist</Text></Center> : <Stack.Navigator 
+                { user ? <AppTabs /> : <Stack.Navigator 
                 // screenOptions={{
                 //     header: () => null
                 // }}
