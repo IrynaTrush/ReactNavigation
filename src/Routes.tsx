@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { NavigationContainer, RouteProp } from '@react-navigation/native';
-import { Button, Text } from 'react-native';
+import { Button, Text, ActivityIndicator, AsyncStorage } from 'react-native';
 import { Center } from './Center';
 import { AuthParamList, AuthNavProps } from './AuthParamList';
+import { AuthContext } from './AuthProvider';
 
 interface RoutesProps {
 
@@ -12,9 +13,13 @@ interface RoutesProps {
 const Stack = createStackNavigator<AuthParamList>();
 
 function Login({navigation, route} : AuthNavProps<'Login'>) {
+    const { login } = useContext(AuthContext);
     return (
         <Center>
             <Text>Login screen</Text>
+            <Button title="log me in" onPress={() => {
+                login();
+            }}/>
             <Button title="go to register" onPress={() => {
                 navigation.navigate('Register')
             }}/>
@@ -35,9 +40,30 @@ function Register({navigation, route} :
 }
 
 export const Routes: React.FC<RoutesProps> = ({}) => {
+    const { user, login } = useContext(AuthContext);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        AsyncStorage.getItem('user').then(userString => {
+            if (userString) {
+               login()
+            }
+            setLoading(false)
+            console.log(userString)
+        }).catch(err => {
+            console.log(err);
+            
+        })
+    }, [])
+
+    if (loading) {
+        return <Center>
+            <ActivityIndicator size="large" />
+        </Center>
+    }
         return (
             <NavigationContainer>
-                <Stack.Navigator 
+                { user ? <Center><Text>you exist</Text></Center> : <Stack.Navigator 
                 // screenOptions={{
                 //     header: () => null
                 // }}
@@ -52,7 +78,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
                         headerTitle: 'Sign Up'
                     }}
                     component={Register} />
-                </Stack.Navigator>
+                </Stack.Navigator> }
             </NavigationContainer>
         );
 }
