@@ -5,6 +5,7 @@ import { Center } from './Center';
 import { Text, Button } from 'react-native';
 import { AuthContext } from './AuthProvider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { HomeStack } from './HomeStack';
 
 interface AppTabsProps {
 
@@ -56,7 +57,7 @@ export const AppTabs: React.FC<AppTabsProps> = ({}) => {
                 inactiveTintColor: 'gray',
               }}
             >
-                <Tabs.Screen name="Home" component={Home}/>
+                <Tabs.Screen name="Home" component={HomeStack}/>
                 <Tabs.Screen name="Search" component={Search} />
             </Tabs.Navigator>
         );
