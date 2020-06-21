@@ -4,14 +4,15 @@ import { Center } from './Center';
 import { Text, TouchableOpacity, FlatList, Button } from 'react-native';
 import { AuthContext } from './AuthProvider';
 import faker from 'faker';
+import { HomeParamList, HomeStackNavProps } from './HomeParamList';
 
 interface HomeStackProps {
 
 }
 
- const Stack = createStackNavigator();
+ const Stack = createStackNavigator<HomeParamList>();
 
- function Feed() {
+ function Feed({navigation} : HomeStackNavProps<'Feed'>) {
     return(
         <Center>
             <FlatList 
@@ -20,7 +21,11 @@ interface HomeStackProps {
             keyExtractor={(product, ind) => product + ind} 
             renderItem={({item}) => {
                 return(
-                    <Button title={item} onPress={() => {}}/>
+                    <Button title={item} onPress={() => {
+                        navigation.navigate('Product', {
+                            name: item
+                        });
+                    }}/>
                 );
             }}
             />
@@ -28,10 +33,23 @@ interface HomeStackProps {
     );
 }
 
+function Product({route} : HomeStackNavProps<'Product'>) {
+    return(
+        <Center>
+            <Text>{route.params.name}</Text>
+        </Center>
+    );
+}
+
 export const HomeStack: React.FC<HomeStackProps> = ({}) => {
     const {logout} = useContext(AuthContext);
         return (
-            <Stack.Navigator>
+            <Stack.Navigator initialRouteName="Feed">
+                <Stack.Screen 
+                options={({route}) => ({
+                    headerTitle: route.params.name
+                })}
+                name="Product" component={Product} />
                 <Stack.Screen name="Feed" 
                 options={{
                     headerRight: () => {
