@@ -6,6 +6,7 @@ import { Text, Button } from 'react-native';
 import { AuthContext } from './AuthProvider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { HomeStack } from './HomeStack';
+import { SearchStack } from './SearchStack';
 
 interface AppTabsProps {
 
@@ -21,14 +22,6 @@ function Home() {
             <Button title="logout" onPress={() => {
                 logout();
             }}/>
-        </Center>
-    );
-}
-
-function Search() {
-    return (
-        <Center>
-            <Text>Search</Text>
         </Center>
     );
 }
@@ -58,7 +51,7 @@ export const AppTabs: React.FC<AppTabsProps> = ({}) => {
               }}
             >
                 <Tabs.Screen name="Home" component={HomeStack}/>
-                <Tabs.Screen name="Search" component={Search} />
+                <Tabs.Screen name="Search" component={SearchStack} />
             </Tabs.Navigator>
         );
 }

@@ -5,6 +5,7 @@ import { Text, TouchableOpacity, FlatList, Button } from 'react-native';
 import { AuthContext } from './AuthProvider';
 import faker from 'faker';
 import { HomeParamList, HomeStackNavProps } from './HomeParamList';
+import { addProductRoutes } from './addProducts';
 
 interface HomeStackProps {
 
@@ -73,27 +74,7 @@ export const HomeStack: React.FC<HomeStackProps> = ({}) => {
     const {logout} = useContext(AuthContext);
         return (
             <Stack.Navigator initialRouteName="Feed">
-                <Stack.Screen 
-                name="EditProduct"
-                component={EditProduct}
-                options={({route}) => ({
-                    headerTitle: `Edit: ${route.params.name}`,
-                    headerRight: () => <TouchableOpacity 
-                    onPress={() => {
-                        if (route.params.submit) {
-                            route.params.submit?.current()
-                        }
-                    }}
-                    style={{paddingRight: 10}}>
-                        <Text style={{color: 'red'}}>Done</Text>
-                    </TouchableOpacity>
-                })}
-                />
-                <Stack.Screen 
-                options={({route}) => ({
-                    headerTitle: route.params.name
-                })}
-                name="Product" component={Product} />
+                {addProductRoutes(Stack)}
                 <Stack.Screen name="Feed" 
                 options={{
                     headerRight: () => {
